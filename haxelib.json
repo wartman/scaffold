@@ -1,0 +1,11 @@
+{
+  "name": "scaffold",
+  "version": "0.0.1",
+  "url": "https://github.com/wartman/scaffold",
+  "releasenote": "prerelease",
+  "classPath": "src",
+  "contributors": ["wartman"],
+  "dependencies": {},
+  "description": "Composable macro build steps for Haxe.",
+  "license": "Public"
+}
