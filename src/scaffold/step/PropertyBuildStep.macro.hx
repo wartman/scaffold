@@ -4,15 +4,23 @@ import haxe.macro.Expr;
 
 using Scaffold;
 
+typedef PropertyBuildStepOptions = {
+	public final meta:String;
+};
+
 class PropertyBuildStep extends BuildStep {
-	public function new() {}
+	final options:PropertyBuildStepOptions;
+
+	public function new(?options:PropertyBuildStepOptions) {
+		this.options = options ?? {meta: ':prop'};
+	}
 
 	public function steps() return [];
 
 	public function apply(context:BuildContext) {
 		context.fields
 			.select()
-			.byMeta(':prop')
+			.byMeta(options.meta)
 			.apply(field -> parseField(context, field));
 	}
 
@@ -20,13 +28,13 @@ class PropertyBuildStep extends BuildStep {
 		switch field.kind {
 			case FVar(t, e):
 				if (e != null) {
-					e.pos.error('Expressions are not allowed in :prop fields');
+					e.pos.error('Expressions are not allowed in ${options.meta} fields');
 				}
 
 				var name = field.name;
 				var getterName = 'get_$name';
 				var setterName = 'set_$name';
-				var meta = switch field.meta.get(':prop') {
+				var meta = switch field.meta.get(options.meta) {
 					case Some(value): value;
 					case None: throw 'assert';
 				}

@@ -9,7 +9,7 @@ function build() {
 		.ofSteps([
 			new ConstructorBuildStep({
 				children: [
-					new AutoInitializedFieldBuildStep({meta: 'auto'}),
+					new AutoInitializedFieldBuildStep({meta: ':auto'}),
 					new JsonSerializerBuildStep()
 				]
 			}),

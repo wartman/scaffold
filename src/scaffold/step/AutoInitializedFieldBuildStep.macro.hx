@@ -6,11 +6,13 @@ import haxe.macro.Expr;
 using Lambda;
 using Scaffold;
 
+typedef AutoInitializedFieldBuildStepOption = {
+	public final meta:String;
+	public final ?late:Bool;
+};
+
 class AutoInitializedFieldBuildStep extends BuildStep {
-	final options:{
-		public final meta:String;
-		public final ?late:Bool;
-	};
+	final options:AutoInitializedFieldBuildStepOption;
 
 	public function new(options) {
 		this.options = options;
@@ -23,7 +25,7 @@ class AutoInitializedFieldBuildStep extends BuildStep {
 			case Some(constructor):
 				context.fields
 					.select()
-					.byMeta(':${options.meta}')
+					.byMeta(options.meta)
 					.apply(field -> parseField(constructor, field));
 			case None:
 				Context.warning(
@@ -53,7 +55,7 @@ class AutoInitializedFieldBuildStep extends BuildStep {
 						macro if (props.$name != null) this.$name = props.$name;
 					});
 			default:
-				field.pos.error('Invalid field for :${options.meta}');
+				field.pos.error('Invalid field for ${options.meta}');
 		}
 	}
 }
