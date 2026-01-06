@@ -48,8 +48,8 @@ class FieldCollection {
 		}
 	}
 
-	public function filterByMeta(name:String):Array<Field> {
-		return fields.filter(f -> f.meta.exists(m -> m.name == name));
+	public function select() {
+		return new FieldSelection(fields);
 	}
 
 	public function export():Array<Field> {

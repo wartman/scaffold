@@ -10,9 +10,10 @@ class PropertyBuildStep extends BuildStep {
 	public function steps() return [];
 
 	public function apply(context:BuildContext) {
-		for (field in context.fields.filterByMeta(':prop')) {
-			parseField(context, field);
-		}
+		context.fields
+			.select()
+			.byMeta(':prop')
+			.apply(field -> parseField(context, field));
 	}
 
 	function parseField(context:BuildContext, field:Field) {

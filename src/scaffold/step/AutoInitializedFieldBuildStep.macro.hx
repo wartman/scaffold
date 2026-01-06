@@ -21,9 +21,10 @@ class AutoInitializedFieldBuildStep extends BuildStep {
 	public function apply(context:BuildContext) {
 		switch findAncestorOfType(ConstructorBuildStep) {
 			case Some(constructor):
-				for (field in context.fields.filterByMeta(':${options.meta}')) {
-					parseField(constructor, field);
-				}
+				context.fields
+					.select()
+					.byMeta(':${options.meta}')
+					.apply(field -> parseField(constructor, field));
 			case None:
 				Context.warning(
 					'Attempting to use an AutoInitializedFieldBuildStep outside of a ConstructorBuildStep.'
